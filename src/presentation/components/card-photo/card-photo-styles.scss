@@ -1,0 +1,22 @@
+.cardPhotoWrap {
+  margin-bottom: 32px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: $white;
+
+  h3 {
+    padding: 8px;
+    color: $gray;
+  }
+
+  .likeWrap {
+    padding: 12px;
+    border-bottom: 1px solid $lightGray;
+
+    i {
+      font-size: 24px;
+      color: $primary;
+      cursor: pointer;
+    }
+  }
+}

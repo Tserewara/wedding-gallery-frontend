@@ -1,0 +1,51 @@
+.commentsContainerWrap {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+
+  .more {
+    margin: 0 8px 8px;
+    color: $gray;
+    cursor: pointer;
+  }
+
+  .comment {
+    background: $background;
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    color: $gray;
+
+    .author {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: $black;
+    }
+  }
+
+  input {
+    margin: 16px 0;
+    padding: 8px;
+    border-radius: 8px;
+    line-height: 3;
+    border: none;
+    background-color: $background;
+    font-size: 16px;
+  }
+
+  button {
+    border-radius: 6px;
+    border: none;
+    line-height: 2;
+    width: 8rem;
+    cursor: pointer;
+    background-color: $primary;
+    color: $white;
+    font-size: 14px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
