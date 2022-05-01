@@ -36,6 +36,7 @@ export default {
         );
         localStorage.setItem("token", response.token);
         localStorage.setItem("user_id", response.user_id);
+        this.$router.push("/");
       } catch (error) {
         this.errorMessage = error.message;
       }
