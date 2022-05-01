@@ -1,4 +1,5 @@
 import EmailInUseError from "@/domain/errors/email-in-use-error";
+import MissingParamError from "@/domain/errors/missing-param-error";
 
 class RemoteCreateUser {
   constructor(url, httpClient) {
@@ -21,6 +22,8 @@ class RemoteCreateUser {
     switch (httpResponse.status) {
       case 409:
         throw new EmailInUseError();
+      case 400:
+        throw new MissingParamError();
       default:
         break;
     }

@@ -28,12 +28,12 @@ export default {
   name: "SignUpPage",
   data() {
     return {
-      name: "Tserero",
-      email: "peter@example.com",
-      password: "aPassword",
-      isAdmin: true,
-      confirmationPassword: "aPassword",
-      errorMessage: "",
+      name: null,
+      email: null,
+      password: null,
+      confirmationPassword: null,
+      isAdmin: false,
+      errorMessage: null,
     };
   },
   methods: {

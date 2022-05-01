@@ -1,8 +1,8 @@
-class EmailInUserError extends Error {
+class EmailInUseError extends Error {
   constructor() {
     super("Email has already been taken");
-    this.name = "EmailInUserError";
+    this.name = "EmailInUseError";
   }
 }
 
-export default EmailInUserError;
+export default EmailInUseError;
