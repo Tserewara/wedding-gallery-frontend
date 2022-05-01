@@ -4,25 +4,29 @@
     <p>{{ errorMessage }}</p>
   </div>
   <form>
-    <input v-model="name" type="text" placeholder="Enter your name" />
-    <input v-model="email" type="email" placeholder="Enter your email" />
+    <input v-model="name" type="text" placeholder="Enter your name" /><br />
+    <input v-model="email" type="email" placeholder="Enter your email" /><br />
     <input
       v-model="password"
       type="password"
       placeholder="Enter your password"
-    /><input
+    /><br />
+    <input
       v-model="confirmationPassword"
       type="password"
       placeholder="Repeat your password"
-    />
+    /><br />
+
+    <input v-model="picked" type="radio" value="admin" />
+    <label>I'm the bride/groom</label><br />
+    <input v-model="picked" type="radio" value="friend" />
+    <label>I'm a friend</label><br />
     <button @click="signUp">Sign Up</button>
   </form>
 </template>
 
 <script>
-import RemoteCreateUser from "@/domain/usecases/remote-create-user.js";
-import axiosHttpClientFactory from "@/main/factories/infra/axios-http-client-factory";
-import apiUrlFactory from "@/main/factories/infra/api-url-factory";
+import remoteCreateUserFactory from "@/main/factories/domain/usecases/remote-create-user-factory";
 
 export default {
   name: "SignUpPage",
@@ -32,18 +36,21 @@ export default {
       email: null,
       password: null,
       confirmationPassword: null,
-      isAdmin: false,
+      picked: false,
       errorMessage: null,
     };
+  },
+  computed: {
+    isAdmin() {
+      return this.picked === "admin" ? true : false;
+    },
   },
   methods: {
     async signUp(event) {
       event.preventDefault();
 
-      const remoteCreateUser = new RemoteCreateUser(
-        apiUrlFactory("/register"),
-        axiosHttpClientFactory()
-      );
+      const remoteCreateUser = remoteCreateUserFactory();
+
       try {
         await remoteCreateUser.create(
           this.name,
