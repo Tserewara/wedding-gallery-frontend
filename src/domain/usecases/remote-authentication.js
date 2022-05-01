@@ -17,6 +17,8 @@ export class RemoteAuthentication {
       {}
     );
     switch (httpResponse.status) {
+      case 200:
+        return httpResponse.data;
       case 403:
         throw new InvalidCredentialsError();
       default:
