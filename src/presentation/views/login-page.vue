@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { RemoteAuthentication } from "@/data/usecases/remote-authentication.js";
+import { RemoteAuthentication } from "@/domain/usecases/remote-authentication.js";
 import { AxiosHttpClient } from "@/infra/axios-http-client.js";
 
 export default {
@@ -33,12 +33,7 @@ export default {
         axiosHttpClient
       );
 
-      const response = await remoteAuthentication.auth(
-        this.email,
-        this.password
-      );
-
-      console.log(response);
+      await remoteAuthentication.auth(this.email, this.password);
     },
   },
 };
