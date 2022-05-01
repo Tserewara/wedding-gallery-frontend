@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export class AxiosHttpClient {
+class AxiosHttpClient {
   async request(url, method, data, headers) {
     try {
       return await axios.request({ url, method, data, headers });
@@ -9,3 +9,5 @@ export class AxiosHttpClient {
     }
   }
 }
+
+export default AxiosHttpClient;

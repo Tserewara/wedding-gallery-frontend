@@ -15,9 +15,7 @@
 </template>
 
 <script>
-import { RemoteAuthentication } from "@/domain/usecases/remote-authentication.js";
-import { AxiosHttpClient } from "@/infra/axios-http-client.js";
-
+import remoteAuthenticationFactory from "@/main/factories/domain/usecases/remote-authentication-factory.js";
 export default {
   name: "LoginPage",
   data() {
@@ -30,13 +28,7 @@ export default {
   methods: {
     async auth(event) {
       event.preventDefault();
-      const axiosHttpClient = new AxiosHttpClient();
-
-      const remoteAuthentication = new RemoteAuthentication(
-        "http://localhost:5000/login",
-        axiosHttpClient
-      );
-
+      const remoteAuthentication = remoteAuthenticationFactory();
       try {
         const response = await remoteAuthentication.auth(
           this.email,
