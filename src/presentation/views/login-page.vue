@@ -1,5 +1,8 @@
 <template>
   <h1>Login</h1>
+  <div class="errorWrap">
+    <p>{{ errorMessage }}</p>
+  </div>
   <form>
     <input v-model="email" type="email" placeholder="Enter your email" />
     <input
@@ -21,6 +24,7 @@ export default {
     return {
       email: "peter@example.com",
       password: "aPassword",
+      errorMessage: "",
     };
   },
   methods: {
@@ -33,7 +37,11 @@ export default {
         axiosHttpClient
       );
 
-      await remoteAuthentication.auth(this.email, this.password);
+      try {
+        await remoteAuthentication.auth(this.email, this.password);
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
     },
   },
 };
