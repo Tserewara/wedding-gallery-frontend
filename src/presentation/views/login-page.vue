@@ -38,7 +38,12 @@ export default {
       );
 
       try {
-        await remoteAuthentication.auth(this.email, this.password);
+        const response = await remoteAuthentication.auth(
+          this.email,
+          this.password
+        );
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user_id", response.user_id);
       } catch (error) {
         this.errorMessage = error.message;
       }
