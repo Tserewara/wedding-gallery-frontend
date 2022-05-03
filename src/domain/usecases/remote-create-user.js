@@ -17,15 +17,15 @@ class RemoteCreateUser {
         password: password,
         is_admin: isAdmin,
       },
-      {}
+      {} // headers
     );
     switch (httpResponse.status) {
       case 409:
         throw new EmailInUseError();
       case 400:
         throw new MissingParamError();
-      default:
-        break;
+      case 201:
+        return httpResponse.data;
     }
   }
 }
