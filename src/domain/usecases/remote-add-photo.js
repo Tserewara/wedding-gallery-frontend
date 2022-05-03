@@ -18,6 +18,8 @@ class RemoteAddPhoto {
       { "Content-Type": "multipart/form-data" }
     );
     switch (httpResponse.status) {
+      case 201:
+        return httpResponse.data;
       case 400:
         throw new MissingParamError();
       case 500:
