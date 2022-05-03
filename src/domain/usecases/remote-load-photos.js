@@ -6,9 +6,9 @@ class RemoteLoadPhotos {
     this.httpClient = httpClient;
   }
 
-  async load(page) {
+  async load(page, userId) {
     const httpResponse = await this.httpClient.request(
-      `${this.url}?page=${page}`,
+      `${this.url}?page=${page}&user_id=${userId}`,
       "get"
     );
     switch (httpResponse.status) {

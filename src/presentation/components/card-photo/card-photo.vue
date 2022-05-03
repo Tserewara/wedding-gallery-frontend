@@ -1,6 +1,6 @@
 <template>
   <div class="cardPhotoWrap">
-    <h3>uploaded by {{ photo._id }}</h3>
+    <h3>uploaded by {{ photo.username }}</h3>
     <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
       <i class="fa-solid fa-heart"></i>
