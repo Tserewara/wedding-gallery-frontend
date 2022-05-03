@@ -1,4 +1,5 @@
 import MissingParamError from "@/domain/errors/missing-param-error";
+import UploadError from "@/domain/errors/upload-error";
 
 class RemoteAddPhoto {
   constructor(url, httpClient) {
@@ -19,6 +20,8 @@ class RemoteAddPhoto {
     switch (httpResponse.status) {
       case 400:
         throw new MissingParamError();
+      case 500:
+        throw new UploadError();
     }
   }
 }
