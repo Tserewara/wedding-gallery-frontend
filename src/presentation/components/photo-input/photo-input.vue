@@ -7,15 +7,16 @@
 </template>
 
 <script>
-import RemoteAddPhoto from "../../../domain/usecases/remote-add-photo";
-import apiUrlFactory from "../../../main/factories/infra/api-url-factory";
-import axiosHttpClientFactory from "../../../main/factories/infra/axios-http-client-factory";
+import RemoteAddPhoto from "@/domain/usecases/remote-add-photo";
+import apiUrlFactory from "@/main/factories/infra/api-url-factory";
+import axiosHttpClientFactory from "@/main/factories/infra/axios-http-client-factory";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "PhotoInput",
   data() {
     return {
-      file: "",
+      file: null,
     };
   },
   methods: {
@@ -24,13 +25,21 @@ export default {
     },
     async uploadPhoto(event) {
       event.preventDefault();
-      const axiosHttpClient = axiosHttpClientFactory();
+      const toast = useToast();
 
+      const axiosHttpClient = axiosHttpClientFactory();
       const url = apiUrlFactory("/photos");
 
-      const remoteAddPhoto = new RemoteAddPhoto(url, axiosHttpClient);
-
-      await remoteAddPhoto.add("", this.file);
+      try {
+        const remoteAddPhoto = new RemoteAddPhoto(url, axiosHttpClient);
+        const response = await remoteAddPhoto.add(
+          "627166cbc8ff02d4ca2ead74",
+          this.file
+        );
+        toast.success(response.msg);
+      } catch (error) {
+        toast.error(error.message);
+      }
     },
   },
 };
