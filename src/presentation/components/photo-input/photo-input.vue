@@ -7,9 +7,7 @@
 </template>
 
 <script>
-import RemoteAddPhoto from "@/domain/usecases/remote-add-photo";
-import apiUrlFactory from "@/main/factories/infra/api-url-factory";
-import axiosHttpClientFactory from "@/main/factories/infra/axios-http-client-factory";
+import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
 import { useToast } from "vue-toastification";
 
 export default {
@@ -26,19 +24,14 @@ export default {
     async uploadPhoto(event) {
       event.preventDefault();
       const toast = useToast();
-
-      const axiosHttpClient = axiosHttpClientFactory();
-      const url = apiUrlFactory("/photos");
+      const remoteAddPhoto = remoteAddPhotoFactory();
+      const userId = localStorage.getItem("user_id");
 
       try {
-        const remoteAddPhoto = new RemoteAddPhoto(url, axiosHttpClient);
-        const response = await remoteAddPhoto.add(
-          localStorage.getItem("user_id"),
-          this.file
-        );
+        const response = await remoteAddPhoto.add(userId, this.file);
         toast.success(response.msg);
       } catch (error) {
-        toast.error(error.message);
+        toast.error(`Photo missing: ${error.message}`);
       }
     },
   },
