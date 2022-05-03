@@ -6,10 +6,15 @@ class RemoteLoadPhotos {
     this.httpClient = httpClient;
   }
 
-  async load(page, userId) {
+  async load(page, userId, token) {
     const httpResponse = await this.httpClient.request(
       `${this.url}?page=${page}&user_id=${userId}`,
-      "get"
+      "get",
+      {},
+      {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      }
     );
     switch (httpResponse.status) {
       case 200:

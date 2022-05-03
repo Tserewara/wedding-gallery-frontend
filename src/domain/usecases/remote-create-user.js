@@ -8,17 +8,12 @@ class RemoteCreateUser {
   }
 
   async create(name, email, password, isAdmin) {
-    const httpResponse = await this.httpClient.request(
-      this.url,
-      "post",
-      {
-        name: name,
-        email: email,
-        password: password,
-        is_admin: isAdmin,
-      },
-      {} // headers
-    );
+    const httpResponse = await this.httpClient.request(this.url, "post", {
+      name: name,
+      email: email,
+      password: password,
+      is_admin: isAdmin,
+    });
     switch (httpResponse.status) {
       case 409:
         throw new EmailInUseError();

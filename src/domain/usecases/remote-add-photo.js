@@ -7,7 +7,7 @@ class RemoteAddPhoto {
     this.httpClient = httpClient;
   }
 
-  async add(userId, photo) {
+  async add(userId, photo, token) {
     const httpResponse = await this.httpClient.request(
       this.url,
       "post",
@@ -15,7 +15,10 @@ class RemoteAddPhoto {
         user_id: userId,
         photo: photo,
       },
-      { "Content-Type": "multipart/form-data" }
+      {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      }
     );
     switch (httpResponse.status) {
       case 201:

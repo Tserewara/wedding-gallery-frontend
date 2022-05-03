@@ -25,10 +25,11 @@ export default {
       event.preventDefault();
       const toast = useToast();
       const remoteAddPhoto = remoteAddPhotoFactory();
-      const userId = localStorage.getItem("user_id");
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
 
       try {
-        const response = await remoteAddPhoto.add(userId, this.file);
+        const response = await remoteAddPhoto.add(userId, this.file, token);
         toast.success(response.msg);
       } catch (error) {
         toast.error(`Photo missing: ${error.message}`);

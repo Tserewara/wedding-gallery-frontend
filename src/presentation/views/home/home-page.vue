@@ -28,10 +28,9 @@ export default {
   async created() {
     const remoteLoadPhotos = remoteLoadPhotosFactory();
     try {
-      const response = await remoteLoadPhotos.load(
-        this.page,
-        "62714de304e709d3a691c32b"
-      );
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+      const response = await remoteLoadPhotos.load(this.page, userId, token);
       this.photos = response;
       this.isLoading = false;
     } catch (error) {
