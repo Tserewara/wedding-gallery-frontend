@@ -10,9 +10,7 @@
 import GalleryHeader from "@/presentation/components/gallery-header/gallery-header.vue";
 import PhotoInput from "@/presentation/components/photo-input/photo-input.vue";
 import CardPhoto from "@/presentation/components/card-photo/card-photo.vue";
-import RemoteLoadPhotos from "../../../domain/usecases/remote-load-photos";
-import apiUrlFactory from "../../../main/factories/infra/api-url-factory";
-import axiosHttpClientFactory from "../../../main/factories/infra/axios-http-client-factory";
+import remoteLoadPhotosFactory from "@/main/factories/domain/usecases/remote-load-photos-factory";
 
 export default {
   components: { GalleryHeader, PhotoInput, CardPhoto },
@@ -20,13 +18,12 @@ export default {
   data() {
     return {
       photos: [],
+      page: 1,
     };
   },
   async created() {
-    const url = apiUrlFactory("/photos?page=1");
-    const axiosHttpClient = axiosHttpClientFactory();
-    const remoteLoadPhotos = new RemoteLoadPhotos(url, axiosHttpClient);
-    const response = await remoteLoadPhotos.load();
+    const remoteLoadPhotos = remoteLoadPhotosFactory();
+    const response = await remoteLoadPhotos.load(this.page);
     this.photos = response;
   },
 };
