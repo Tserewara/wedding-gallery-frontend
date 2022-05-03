@@ -1,7 +1,7 @@
 <template>
-  <div class="cardPhotoWrap" :key="index" v-for="(photo, index) in photos">
-    <h3>uploaded by {{ photo }}</h3>
-    <img src="https://via.placeholder.com/500" />
+  <div class="cardPhotoWrap">
+    <h3>uploaded by {{ photo._id }}</h3>
+    <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
       <i class="fa-solid fa-heart"></i>
     </div>
@@ -11,11 +11,17 @@
 
 <script>
 import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
+
 export default {
   name: "CardPhoto",
+  components: { CommentsContainer },
+
+  props: {
+    photo: Object,
+  },
+
   data() {
     return {
-      photos: ["john", "tserewara", "tsere", "alf"],
       comments: [
         "Great moment",
         "Great Day",
@@ -24,7 +30,11 @@ export default {
       ],
     };
   },
-  components: { CommentsContainer },
+  methods: {
+    formatImageAddress(address) {
+      return `https://friends-gallery.s3.sa-east-1.amazonaws.com/${address}`;
+    },
+  },
 };
 </script>
 
