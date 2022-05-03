@@ -11,6 +11,7 @@ import GalleryHeader from "@/presentation/components/gallery-header/gallery-head
 import PhotoInput from "@/presentation/components/photo-input/photo-input.vue";
 import CardPhoto from "@/presentation/components/card-photo/card-photo.vue";
 import remoteLoadPhotosFactory from "@/main/factories/domain/usecases/remote-load-photos-factory";
+import { useToast } from "vue-toastification";
 
 export default {
   components: { GalleryHeader, PhotoInput, CardPhoto },
@@ -23,8 +24,14 @@ export default {
   },
   async created() {
     const remoteLoadPhotos = remoteLoadPhotosFactory();
-    const response = await remoteLoadPhotos.load(this.page);
-    this.photos = response;
+    try {
+      const response = await remoteLoadPhotos.load(this.page);
+      this.photos = response;
+    } catch (error) {
+      // handle error here
+      const toast = useToast();
+      toast.error(error.message);
+    }
   },
 };
 </script>

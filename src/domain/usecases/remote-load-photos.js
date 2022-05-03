@@ -1,3 +1,5 @@
+import ServerError from "@/domain/errors/server-error";
+
 class RemoteLoadPhotos {
   constructor(url, httpClient) {
     this.url = url;
@@ -12,6 +14,8 @@ class RemoteLoadPhotos {
     switch (httpResponse.status) {
       case 200:
         return httpResponse.data;
+      default:
+        throw new ServerError();
     }
   }
 }
