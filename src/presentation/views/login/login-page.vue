@@ -1,27 +1,37 @@
 <template>
-  <h1>Login</h1>
-  <div class="errorWrap">
-    <p>{{ errorMessage }}</p>
+  <GalleryHeader />
+  <div class="loginWrap">
+    <h1>Login</h1>
+    <form class="formWrap">
+      <input v-model="email" type="email" placeholder="Enter your email" />
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Enter your password"
+      />
+      <button @click="auth">Login</button>
+      <div class="register">
+        <RouterLink to="/signup">register</RouterLink>
+      </div>
+    </form>
+    <div class="errorWrap">
+      <p>{{ errorMessage }}</p>
+    </div>
   </div>
-  <form>
-    <input v-model="email" type="email" placeholder="Enter your email" />
-    <input
-      v-model="password"
-      type="password"
-      placeholder="Enter your password"
-    />
-    <button @click="auth">Login</button>
-  </form>
 </template>
 
 <script>
 import remoteAuthenticationFactory from "@/main/factories/domain/usecases/remote-authentication-factory.js";
+import GalleryHeader from "@/presentation/components/gallery-header/gallery-header.vue";
 export default {
   name: "LoginPage",
+  components: {
+    GalleryHeader,
+  },
   data() {
     return {
-      email: "peter@example.com",
-      password: "aPassword",
+      email: "",
+      password: "",
       errorMessage: "",
     };
   },
@@ -44,3 +54,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import "./login-page-styles.scss";
+</style>
