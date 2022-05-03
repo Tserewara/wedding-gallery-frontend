@@ -33,7 +33,7 @@ export default {
       try {
         const remoteAddPhoto = new RemoteAddPhoto(url, axiosHttpClient);
         const response = await remoteAddPhoto.add(
-          "627166cbc8ff02d4ca2ead74",
+          localStorage.getItem("user_id"),
           this.file
         );
         toast.success(response.msg);
