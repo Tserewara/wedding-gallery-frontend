@@ -11,10 +11,8 @@
 </template>
 
 <script>
-import RemoteAddComment from "@/domain/usecases/remote-add-comment";
-import apiUrlFactory from "@/main/factories/infra/api-url-factory";
-import axiosHttpClientFactory from "@/main/factories/infra/axios-http-client-factory";
 import { mapActions } from "vuex";
+import remoteAddCommentFactory from "@/main/factories/domain/usecases/remote-add-comment-factory";
 
 export default {
   name: "CommentsContainer",
@@ -30,10 +28,9 @@ export default {
 
   methods: {
     ...mapActions(["addComment"]),
+
     async handleSubmit() {
-      const url = apiUrlFactory("/comment");
-      const axiosHttpClient = axiosHttpClientFactory();
-      const remoteAddComment = new RemoteAddComment(url, axiosHttpClient);
+      const remoteAddComment = remoteAddCommentFactory();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
       const response = await remoteAddComment.add(
