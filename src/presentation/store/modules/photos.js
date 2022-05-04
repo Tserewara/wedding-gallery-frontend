@@ -21,7 +21,7 @@ const mutations = {
   },
   setComment: (state, payload) => {
     const photo = state.photos.find((item) => item._id === payload.photo_id);
-    photo.comments.push(payload);
+    photo.comments.unshift(payload);
   },
 };
 
