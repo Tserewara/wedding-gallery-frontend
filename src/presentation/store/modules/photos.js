@@ -10,14 +10,21 @@ const actions = {
   async loadPhotos({ commit }, response) {
     commit("setInitialPhotos", response);
   },
-  async addComment({ commit }, payload) {
-    commit("setComment", payload);
+  async addPhoto({ commit }, photo) {
+    commit("setPhoto", photo);
+  },
+  async addComment({ commit }, photo) {
+    commit("setComment", photo);
   },
 };
 
 const mutations = {
   setInitialPhotos: (state, photos) => {
     state.photos = photos;
+  },
+  setPhoto: (state, photo) => {
+    console.log("THIS", photo);
+    state.photos.unshift(photo);
   },
   setComment: (state, payload) => {
     const photo = state.photos.find((item) => item._id === payload.photo_id);

@@ -1,14 +1,15 @@
 <template>
   <form class="formWrap">
     <label for="file">Choose a photo</label>
-    <input @change="handleInputChange" type="file" name="file" id="file" />
-    <button @click="uploadPhoto">Add</button>
+    <input @change="handleChange" type="file" name="file" id="file" />
+    <button @click="handleClick">Add</button>
   </form>
 </template>
 
 <script>
 import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
 import { useToast } from "vue-toastification";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "PhotoInput",
@@ -17,11 +18,13 @@ export default {
       file: null,
     };
   },
+  computed: mapGetters(["isAdmin"]),
   methods: {
-    handleInputChange(event) {
+    ...mapActions(["addPhoto"]),
+    handleChange(event) {
       this.file = event.target.files[0];
     },
-    async uploadPhoto(event) {
+    async handleClick(event) {
       event.preventDefault();
       const toast = useToast();
       const remoteAddPhoto = remoteAddPhotoFactory();
@@ -30,7 +33,10 @@ export default {
 
       try {
         const response = await remoteAddPhoto.add(userId, this.file, token);
-        toast.success(response.msg);
+        if (this.isAdmin) {
+          this.addPhoto(response);
+        }
+        toast.success("photo added successfully");
       } catch (error) {
         toast.error(`Photo missing: ${error.message}`);
       }

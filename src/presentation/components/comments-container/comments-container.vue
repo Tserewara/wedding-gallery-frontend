@@ -47,6 +47,7 @@ export default {
       const remoteAddComment = remoteAddCommentFactory();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
+      if (!this.newComment.trim()) return;
       const response = await remoteAddComment.add(
         userId,
         this.photoId,
