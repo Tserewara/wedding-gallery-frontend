@@ -30,14 +30,17 @@ export default {
   },
   methods: {
     ...mapActions(["loadPhotos", "saveCurrentUser"]),
-    async handleClick() {
-      this.page++;
+    async fetchPhotos() {
       const remoteLoadPhotos = remoteLoadPhotosFactory();
+
       try {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
+
         const response = await remoteLoadPhotos.load(this.page, userId, token);
+
         this.isLoading = false;
+
         this.loadPhotos(response.photos);
         this.saveCurrentUser({
           userId: userId,
@@ -48,25 +51,16 @@ export default {
         toast.error(error.message);
       }
     },
+
+    async handleClick() {
+      this.page++;
+      await this.fetchPhotos();
+    },
   },
   computed: mapGetters(["allPhotos", "currentUser"]),
 
   async created() {
-    const remoteLoadPhotos = remoteLoadPhotosFactory();
-    try {
-      const userId = localStorage.getItem("userId");
-      const token = localStorage.getItem("token");
-      const response = await remoteLoadPhotos.load(this.page, userId, token);
-      this.isLoading = false;
-      this.loadPhotos(response.photos);
-      this.saveCurrentUser({
-        userId: userId,
-        isAdmin: response.is_admin,
-      });
-    } catch (error) {
-      const toast = useToast();
-      toast.error(error.message);
-    }
+    this.fetchPhotos();
   },
 };
 </script>
