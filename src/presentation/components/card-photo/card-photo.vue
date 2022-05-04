@@ -3,10 +3,14 @@
     <h3>uploaded by {{ photo.username }}</h3>
     <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
-      <i class="fa-solid fa-heart"></i>
+      <i
+        class="fa-solid fa-heart"
+        :class="{ liked: isLikedByCurrentUser }"
+        @click="handleLikeClick"
+      ></i>
       <button
         v-if="currentUser.isAdmin && !photo.is_approved"
-        @click="handleClick"
+        @click="handleApproveClick"
       >
         Approve Photo
       </button>
@@ -20,6 +24,9 @@ import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
 import remoteApprovePhotoFactory from "@/main/factories/domain/usecases/remote-approve-photo-factory";
+import axiosHttpClientFactory from "../../../main/factories/infra/axios-http-client-factory";
+import RemoteLikePhoto from "@/domain/usecases/remote-like-photo";
+import apiUrlFactory from "../../../main/factories/infra/api-url-factory";
 
 export default {
   name: "CardPhoto",
@@ -32,7 +39,7 @@ export default {
     formatImageAddress(address) {
       return `https://friends-gallery.s3.sa-east-1.amazonaws.com/${address}`;
     },
-    async handleClick() {
+    async handleApproveClick() {
       const toast = useToast();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
@@ -49,9 +56,28 @@ export default {
         toast.error(error.message);
       }
     },
+    async handleLikeClick() {
+      const toast = useToast();
+      const token = localStorage.getItem("token");
+      const userId = this.currentUser.userId;
+      const axiosHttpClient = axiosHttpClientFactory();
+      const url = apiUrlFactory("/like");
+      const remoteLikePhoto = new RemoteLikePhoto(url, axiosHttpClient);
+
+      try {
+        await remoteLikePhoto.like(userId, this.photo._id, token);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    },
   },
 
-  computed: mapGetters(["currentUser"]),
+  computed: {
+    ...mapGetters(["currentUser"]),
+    isLikedByCurrentUser() {
+      return this.photo.likes.includes(this.currentUser.userId);
+    },
+  },
 };
 </script>
 
