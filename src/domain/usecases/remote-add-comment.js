@@ -1,3 +1,5 @@
+import ServerError from "@/domain/errors/server-error";
+
 class RemoteAddComment {
   constructor(url, httpClient) {
     this.url = url;
@@ -21,6 +23,8 @@ class RemoteAddComment {
     switch (httpResponse.status) {
       case 201:
         return httpResponse.data;
+      default:
+        throw new ServerError();
     }
   }
 }

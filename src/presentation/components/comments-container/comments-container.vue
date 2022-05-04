@@ -20,6 +20,7 @@
 <script>
 import { mapActions } from "vuex";
 import remoteAddCommentFactory from "@/main/factories/domain/usecases/remote-add-comment-factory";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "CommentsContainer",
@@ -48,14 +49,20 @@ export default {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
       if (!this.newComment.trim()) return;
-      const response = await remoteAddComment.add(
-        userId,
-        this.photoId,
-        this.newComment,
-        token
-      );
-      this.addComment(response);
-      this.newComment = "";
+      const toast = useToast();
+
+      try {
+        const response = await remoteAddComment.add(
+          userId,
+          this.photoId,
+          this.newComment,
+          token
+        );
+        this.addComment(response);
+        this.newComment = "";
+      } catch (error) {
+        toast.error(`Server Error: ${error.message}`);
+      }
     },
     toggleComments() {
       this.showAll = !this.showAll;
