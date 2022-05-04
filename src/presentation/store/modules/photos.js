@@ -8,7 +8,7 @@ const getters = {
 
 const actions = {
   async loadPhotos({ commit }, response) {
-    commit("setInitialPhotos", response);
+    commit("setPhotos", response);
   },
   async addPhoto({ commit }, photo) {
     commit("setPhoto", photo);
@@ -25,8 +25,8 @@ const actions = {
 };
 
 const mutations = {
-  setInitialPhotos: (state, photos) => {
-    state.photos = photos;
+  setPhotos: (state, photos) => {
+    state.photos = [...state.photos, ...photos];
   },
   setPhoto: (state, photo) => {
     state.photos.unshift(photo);
