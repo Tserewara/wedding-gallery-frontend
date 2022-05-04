@@ -26,7 +26,7 @@
           <label>I'm a friend</label>
         </div>
       </div>
-      <button @click="signUp">Sign Up</button>
+      <button @click="handleSubmit">Sign Up</button>
     </form>
     <div v-if="errorMessage" class="errorWrap">
       <p>{{ errorMessage }}</p>
@@ -73,7 +73,7 @@ export default {
       this.picked = false;
     },
 
-    async signUp(event) {
+    async handleSubmit(event) {
       event.preventDefault();
 
       this.successMessage = null;

@@ -5,7 +5,7 @@
     <div class="likeWrap">
       <i class="fa-solid fa-heart"></i>
     </div>
-    <CommentsContainer :comments="comments" />
+    <CommentsContainer :comments="photo.comments" :photoId="photo._id" />
   </div>
 </template>
 
@@ -21,14 +21,7 @@ export default {
   },
 
   data() {
-    return {
-      comments: [
-        "Great moment",
-        "Great Day",
-        "It was a remarkable day",
-        "Wish you the best",
-      ],
-    };
+    return {};
   },
   methods: {
     formatImageAddress(address) {

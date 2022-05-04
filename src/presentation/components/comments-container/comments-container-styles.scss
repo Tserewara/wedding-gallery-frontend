@@ -7,6 +7,10 @@
     margin: 0 8px 8px;
     color: $gray;
     cursor: pointer;
+
+    &:hover {
+      color: $primary;
+    }
   }
 
   .comment {

@@ -9,7 +9,7 @@
         type="password"
         placeholder="Enter your password"
       />
-      <button @click="auth">Login</button>
+      <button @click="handleSubmit">Login</button>
       <div class="register">
         <RouterLink to="/signup">register</RouterLink>
       </div>
@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    async auth(event) {
+    async handleSubmit(event) {
       event.preventDefault();
       const remoteAuthentication = remoteAuthenticationFactory();
       try {
