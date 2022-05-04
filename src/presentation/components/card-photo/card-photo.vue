@@ -24,9 +24,7 @@ import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
 import remoteApprovePhotoFactory from "@/main/factories/domain/usecases/remote-approve-photo-factory";
-import axiosHttpClientFactory from "../../../main/factories/infra/axios-http-client-factory";
-import RemoteLikePhoto from "@/domain/usecases/remote-like-photo";
-import apiUrlFactory from "../../../main/factories/infra/api-url-factory";
+import remoteLikePhotoFactory from "@/main/factories/domain/usecases/remote-like-photo-factory";
 
 export default {
   name: "CardPhoto",
@@ -60,9 +58,8 @@ export default {
       const toast = useToast();
       const token = localStorage.getItem("token");
       const userId = this.currentUser.userId;
-      const axiosHttpClient = axiosHttpClientFactory();
-      const url = apiUrlFactory("/like");
-      const remoteLikePhoto = new RemoteLikePhoto(url, axiosHttpClient);
+
+      const remoteLikePhoto = remoteLikePhotoFactory();
 
       try {
         await remoteLikePhoto.like(userId, this.photo._id, token);
