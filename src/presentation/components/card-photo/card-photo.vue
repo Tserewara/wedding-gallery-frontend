@@ -4,18 +4,19 @@
     <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
       <i class="fa-solid fa-heart"></i>
-      <button v-if="isAdmin" @click="handleClick">Approve Photo</button>
+      <button v-if="isAdmin && !photo.is_approved" @click="handleClick">
+        Approve Photo
+      </button>
     </div>
     <CommentsContainer :comments="photo.comments" :photoId="photo._id" />
   </div>
 </template>
 
 <script>
-import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
 import { mapGetters } from "vuex";
-import RemoteApprovePhoto from "../../../domain/usecases/remote-approve-photo";
-import apiUrlFactory from "../../../main/factories/infra/api-url-factory";
-import axiosHttpClientFactory from "../../../main/factories/infra/axios-http-client-factory";
+import { useToast } from "vue-toastification";
+import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
+import remoteApprovePhotoFactory from "@/main/factories/domain/usecases/remote-approve-photo-factory";
 
 export default {
   name: "CardPhoto",
@@ -28,17 +29,20 @@ export default {
       return `https://friends-gallery.s3.sa-east-1.amazonaws.com/${address}`;
     },
     async handleClick() {
+      const toast = useToast();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
-      const url = apiUrlFactory("/photos");
-      const axiosHttpClient = axiosHttpClientFactory();
-      const remoteApprovePhoto = new RemoteApprovePhoto(url, axiosHttpClient);
-
-      const reponse = await remoteApprovePhoto.approve(
-        userId,
-        this.photo._id,
-        token
-      );
+      const remoteApprovePhoto = remoteApprovePhotoFactory();
+      try {
+        const response = await remoteApprovePhoto.approve(
+          userId,
+          this.photo._id,
+          token
+        );
+        toast.success(response.msg);
+      } catch (error) {
+        toast.error(error.message);
+      }
     },
   },
 
