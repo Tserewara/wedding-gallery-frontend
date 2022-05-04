@@ -5,4 +5,12 @@
   color: $primary;
   padding: 1rem;
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span:hover {
+    font-weight: bold;
+    cursor: pointer;
+  }
 }
