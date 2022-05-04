@@ -19,7 +19,7 @@ class RemoteAddComment {
       }
     );
     switch (httpResponse.status) {
-      case 204:
+      case 201:
         return httpResponse.data;
     }
   }
