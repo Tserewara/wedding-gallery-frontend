@@ -26,9 +26,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["loadPhotos"]),
+    ...mapActions(["loadPhotos", "setUserIsAdmin"]),
   },
-  computed: mapGetters(["allPhotos"]),
+  computed: mapGetters(["allPhotos", "isAdmin"]),
 
   async created() {
     const remoteLoadPhotos = remoteLoadPhotosFactory();
@@ -37,7 +37,8 @@ export default {
       const token = localStorage.getItem("token");
       const response = await remoteLoadPhotos.load(this.page, userId, token);
       this.isLoading = false;
-      this.loadPhotos(response);
+      this.loadPhotos(response.photos);
+      this.setUserIsAdmin(response.is_admin);
     } catch (error) {
       const toast = useToast();
       toast.error(error.message);
