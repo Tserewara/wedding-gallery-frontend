@@ -19,6 +19,9 @@ const actions = {
   async approvePhoto({ commit }, photo) {
     commit("setApprovePhoto", photo);
   },
+  async likePhoto({ commit }, photo) {
+    commit("setLikePhoto", photo);
+  },
 };
 
 const mutations = {
@@ -34,6 +37,9 @@ const mutations = {
   },
   setApprovePhoto: (state, photo) => {
     photo.is_approved = true;
+  },
+  setLikePhoto: (state, payload) => {
+    payload.photo.likes.push(payload.userId);
   },
 };
 

@@ -33,7 +33,7 @@ export default {
     photo: Object,
   },
   methods: {
-    ...mapActions(["approvePhoto"]),
+    ...mapActions(["approvePhoto", "likePhoto"]),
     formatImageAddress(address) {
       return `https://friends-gallery.s3.sa-east-1.amazonaws.com/${address}`;
     },
@@ -63,6 +63,7 @@ export default {
 
       try {
         await remoteLikePhoto.like(userId, this.photo._id, token);
+        this.likePhoto({ photo: this.photo, userId: this.currentUser.userId });
       } catch (error) {
         toast.error(error.message);
       }
