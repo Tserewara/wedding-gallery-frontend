@@ -3,7 +3,7 @@
   <div class="mainWrap">
     <GallerySpinner v-if="isLoading" />
     <PhotoInput />
-    <CardPhoto :key="index" v-for="(photo, index) in photos" :photo="photo" />
+    <CardPhoto :key="photo._id" v-for="photo in allPhotos" :photo="photo" />
   </div>
 </template>
 
@@ -14,6 +14,7 @@ import CardPhoto from "@/presentation/components/card-photo/card-photo.vue";
 import GallerySpinner from "@/presentation/components/gallery-spinner/gallery-spinner.vue";
 import remoteLoadPhotosFactory from "@/main/factories/domain/usecases/remote-load-photos-factory";
 import { useToast } from "vue-toastification";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: { GalleryHeader, PhotoInput, CardPhoto, GallerySpinner },
@@ -21,18 +22,22 @@ export default {
   data() {
     return {
       isLoading: true,
-      photos: [],
       page: 1,
     };
   },
+  methods: {
+    ...mapActions(["loadPhotos"]),
+  },
+  computed: mapGetters(["allPhotos"]),
+
   async created() {
     const remoteLoadPhotos = remoteLoadPhotosFactory();
     try {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
       const response = await remoteLoadPhotos.load(this.page, userId, token);
-      this.photos = response;
       this.isLoading = false;
+      this.loadPhotos(response);
     } catch (error) {
       const toast = useToast();
       toast.error(error.message);
