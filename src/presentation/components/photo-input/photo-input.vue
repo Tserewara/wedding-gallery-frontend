@@ -18,7 +18,7 @@ export default {
       file: null,
     };
   },
-  computed: mapGetters(["isAdmin"]),
+  computed: mapGetters(["currentUser"]),
   methods: {
     ...mapActions(["addPhoto"]),
     handleChange(event) {
@@ -33,7 +33,7 @@ export default {
 
       try {
         const response = await remoteAddPhoto.add(userId, this.file, token);
-        if (this.isAdmin) {
+        if (this.currentUser.isAdmin) {
           this.addPhoto(response);
         }
         toast.success("photo added successfully");

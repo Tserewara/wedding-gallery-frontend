@@ -4,7 +4,10 @@
     <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
       <i class="fa-solid fa-heart"></i>
-      <button v-if="isAdmin && !photo.is_approved" @click="handleClick">
+      <button
+        v-if="currentUser.isAdmin && !photo.is_approved"
+        @click="handleClick"
+      >
         Approve Photo
       </button>
     </div>
@@ -48,7 +51,7 @@ export default {
     },
   },
 
-  computed: mapGetters(["isAdmin"]),
+  computed: mapGetters(["currentUser"]),
 };
 </script>
 

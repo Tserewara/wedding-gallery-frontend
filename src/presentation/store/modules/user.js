@@ -1,20 +1,23 @@
 const state = {
-  isAdmin: false,
+  currentUser: {
+    userId: null,
+    isAdmin: false,
+  },
 };
 
 const getters = {
-  isAdmin: (state) => state.isAdmin,
+  currentUser: (state) => state.currentUser,
 };
 
 const actions = {
-  async setUserIsAdmin({ commit }, isAdmin) {
-    commit("setCurrentUserIsAdmin", isAdmin);
+  async saveCurrentUser({ commit }, payload) {
+    commit("setCurrentUser", payload);
   },
 };
 
 const mutations = {
-  setCurrentUserIsAdmin: (state, isAdmin) => {
-    state.isAdmin = isAdmin;
+  setCurrentUser: (state, payload) => {
+    state.currentUser = payload;
   },
 };
 
