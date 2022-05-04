@@ -16,6 +16,9 @@ const actions = {
   async addComment({ commit }, photo) {
     commit("setComment", photo);
   },
+  async approvePhoto({ commit }, photo) {
+    commit("setApprovePhoto", photo);
+  },
 };
 
 const mutations = {
@@ -23,12 +26,14 @@ const mutations = {
     state.photos = photos;
   },
   setPhoto: (state, photo) => {
-    console.log("THIS", photo);
     state.photos.unshift(photo);
   },
   setComment: (state, payload) => {
     const photo = state.photos.find((item) => item._id === payload.photo_id);
     photo.comments.unshift(payload);
+  },
+  setApprovePhoto: (state, photo) => {
+    photo.is_approved = true;
   },
 };
 

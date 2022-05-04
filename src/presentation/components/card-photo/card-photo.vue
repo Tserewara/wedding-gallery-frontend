@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 import CommentsContainer from "@/presentation/components/comments-container/comments-container.vue";
 import remoteApprovePhotoFactory from "@/main/factories/domain/usecases/remote-approve-photo-factory";
@@ -25,6 +25,7 @@ export default {
     photo: Object,
   },
   methods: {
+    ...mapActions(["approvePhoto"]),
     formatImageAddress(address) {
       return `https://friends-gallery.s3.sa-east-1.amazonaws.com/${address}`;
     },
@@ -40,6 +41,7 @@ export default {
           token
         );
         toast.success(response.msg);
+        this.approvePhoto(this.photo);
       } catch (error) {
         toast.error(error.message);
       }

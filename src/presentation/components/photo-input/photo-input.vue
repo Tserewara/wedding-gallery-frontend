@@ -38,7 +38,7 @@ export default {
         }
         toast.success("photo added successfully");
       } catch (error) {
-        toast.error(`Photo missing: ${error.message}`);
+        toast.error(`${error.message}: photo`);
       }
     },
   },
