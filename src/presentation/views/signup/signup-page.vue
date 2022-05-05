@@ -4,17 +4,29 @@
     <h1>Sign Up</h1>
 
     <form class="formWrap">
-      <input v-model="name" type="text" placeholder="Enter your name" />
-      <input v-model="email" type="email" placeholder="Enter your email" />
+      <input
+        v-model="name"
+        type="text"
+        placeholder="Enter your name"
+        required
+      />
+      <input
+        v-model="email"
+        type="email"
+        placeholder="Enter your email"
+        required
+      />
       <input
         v-model="password"
         type="password"
         placeholder="Enter your password"
+        required
       />
       <input
         v-model="passwordConfirmation"
         type="password"
         placeholder="Repeat your password"
+        required
       />
       <div class="roleWrap">
         <div class="role">
@@ -22,7 +34,7 @@
           <label>I'm the bride/groom</label>
         </div>
         <div class="role">
-          <input v-model="picked" type="radio" value="friend" />
+          <input v-model="picked" type="radio" value="friend" checked />
           <label>I'm a friend</label>
         </div>
       </div>
@@ -73,6 +85,12 @@ export default {
       this.picked = false;
     },
 
+    isValidEmail() {
+      const emailRegex =
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      return emailRegex.test(this.email);
+    },
+
     async handleSubmit(event) {
       event.preventDefault();
 
@@ -80,6 +98,11 @@ export default {
 
       if (this.password !== this.passwordConfirmation) {
         this.errorMessage = "Passwords don't match!";
+        return;
+      }
+
+      if (!this.isValidEmail()) {
+        this.errorMessage = "email is invalid";
         return;
       }
 

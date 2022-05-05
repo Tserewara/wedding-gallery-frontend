@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import remoteAuthenticationFactory from "@/main/factories/domain/usecases/remote-authentication-factory.js";
+import remoteAuthenticationFactory from "@/main/factories/domain/usecases/remote-authentication-factory";
 import GalleryHeader from "@/presentation/components/gallery-header/gallery-header.vue";
 export default {
   name: "LoginPage",
