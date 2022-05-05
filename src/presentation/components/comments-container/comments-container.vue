@@ -3,11 +3,7 @@
     <p v-if="!showAll" class="more" @click="toggleComments">
       Show all comments
     </p>
-    <div
-      class="comment"
-      :key="index"
-      v-for="(comment, index) in commentsToShow"
-    >
+    <div class="comment" :key="index" v-for="(comment, index) in commentsToShow">
       <p class="author">{{ comment.username }}</p>
       <p class="content">{{ comment.text }}</p>
     </div>

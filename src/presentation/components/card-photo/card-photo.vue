@@ -3,15 +3,8 @@
     <h3>uploaded by {{ photo.username }}</h3>
     <img :src="formatImageAddress(photo.image_address)" />
     <div class="likeWrap">
-      <i
-        class="fa-solid fa-heart"
-        :class="{ liked: isLikedByCurrentUser }"
-        @click="handleLikeClick"
-      ></i>
-      <button
-        v-if="currentUser.isAdmin && !photo.is_approved"
-        @click="handleApproveClick"
-      >
+      <i class="fa-solid fa-heart" :class="{ liked: isLikedByCurrentUser }" @click="handleLikeClick"></i>
+      <button v-if="currentUser.isAdmin && !photo.is_approved" @click="handleApproveClick">
         Approve Photo
       </button>
     </div>
@@ -52,13 +45,13 @@ export default {
       const remoteApprovePhoto = remoteApprovePhotoFactory();
 
       try {
+        this.approvePhoto(this.photo);
         const response = await remoteApprovePhoto.approve(
           this.currentUser.userId,
           this.photo._id,
           token
         );
         toast.success(response.msg);
-        this.approvePhoto(this.photo);
       } catch (error) {
         this.isTokenExpired(error);
         toast.error(error.message);
@@ -71,12 +64,12 @@ export default {
       const remoteLikePhoto = remoteLikePhotoFactory();
 
       try {
+        this.likePhoto({ photo: this.photo, userId: this.currentUser.userId });
         await remoteLikePhoto.like(
           this.currentUser.userId,
           this.photo._id,
           token
         );
-        this.likePhoto({ photo: this.photo, userId: this.currentUser.userId });
       } catch (error) {
         this.isTokenExpired(error);
         toast.error(error.message);

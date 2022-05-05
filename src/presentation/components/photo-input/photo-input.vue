@@ -28,7 +28,14 @@ export default {
   methods: {
     ...mapActions(["addPhoto"]),
     handleChange(event) {
+      const toast = useToast();
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       this.file = event.target.files[0];
+      const fileType = this.file.type;
+      if (!allowedTypes.includes(fileType)) {
+        toast.error(`File type not allowed ${fileType}`);
+        return;
+      }
     },
     async handleClick(event) {
       event.preventDefault();
