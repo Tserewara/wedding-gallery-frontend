@@ -18,7 +18,7 @@ import GallerySpinner from "@/presentation/components/gallery-spinner/gallery-sp
 import remoteLoadPhotosFactory from "@/main/factories/domain/usecases/remote-load-photos-factory";
 import { useToast } from "vue-toastification";
 import { mapActions, mapGetters } from "vuex";
-import TokenExpiredError from "../../../domain/errors/token-expired-error";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 export default {
   components: { GalleryHeader, PhotoInput, CardPhoto, GallerySpinner },
@@ -72,6 +72,7 @@ export default {
 
 <style lang="scss">
 @import url("./home-page-styles.scss");
+
 .loadMore {
   margin: 1rem 0 2rem;
   font-size: 1rem;

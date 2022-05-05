@@ -4,6 +4,9 @@
     <input @change="handleChange" type="file" name="file" id="file" />
     <button @click="handleClick">Add</button>
   </form>
+  <div v-if="uploading" class="uploading">
+    <GallerySpinner />
+  </div>
 </template>
 
 <script>
@@ -11,12 +14,14 @@ import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
 import TokenExpiredError from "@/domain/errors/token-expired-error";
+import GallerySpinner from "../gallery-spinner/gallery-spinner.vue";
 
 export default {
   name: "PhotoInput",
   data() {
     return {
       file: null,
+      uploading: false,
     };
   },
   computed: mapGetters(["currentUser"]),
@@ -30,8 +35,8 @@ export default {
       const toast = useToast();
       const remoteAddPhoto = remoteAddPhotoFactory();
       const token = localStorage.getItem("token");
-
       try {
+        this.uploading = true;
         const response = await remoteAddPhoto.add(
           this.currentUser.userId,
           this.file,
@@ -40,6 +45,7 @@ export default {
         if (this.currentUser.isAdmin) {
           this.addPhoto(response);
         }
+        this.uploading = false;
         toast.success("photo added successfully");
       } catch (error) {
         if (error instanceof TokenExpiredError) {
@@ -50,6 +56,7 @@ export default {
       }
     },
   },
+  components: { GallerySpinner },
 };
 </script>
 
