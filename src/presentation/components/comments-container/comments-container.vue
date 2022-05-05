@@ -18,9 +18,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import remoteAddCommentFactory from "@/main/factories/domain/usecases/remote-add-comment-factory";
 import { useToast } from "vue-toastification";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 export default {
   name: "CommentsContainer",
@@ -36,6 +37,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["currentUser"]),
     commentsToShow() {
       return this.showAll ? this.comments : this.comments.slice(0, 1);
     },
@@ -46,14 +48,13 @@ export default {
 
     async handleSubmit() {
       const remoteAddComment = remoteAddCommentFactory();
-      const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
       if (!this.newComment.trim()) return;
       const toast = useToast();
 
       try {
         const response = await remoteAddComment.add(
-          userId,
+          this.currentUser.userId,
           this.photoId,
           this.newComment,
           token
@@ -61,6 +62,10 @@ export default {
         this.addComment(response);
         this.newComment = "";
       } catch (error) {
+        if (error instanceof TokenExpiredError) {
+          localStorage.clear();
+          this.$router.push("/login");
+        }
         toast.error(`Server Error: ${error.message}`);
       }
     },

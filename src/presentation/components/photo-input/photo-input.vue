@@ -7,9 +7,10 @@
 </template>
 
 <script>
-import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
-import { useToast } from "vue-toastification";
 import { mapActions, mapGetters } from "vuex";
+import { useToast } from "vue-toastification";
+import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 export default {
   name: "PhotoInput",
@@ -28,16 +29,23 @@ export default {
       event.preventDefault();
       const toast = useToast();
       const remoteAddPhoto = remoteAddPhotoFactory();
-      const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
 
       try {
-        const response = await remoteAddPhoto.add(userId, this.file, token);
+        const response = await remoteAddPhoto.add(
+          this.currentUser.userId,
+          this.file,
+          token
+        );
         if (this.currentUser.isAdmin) {
           this.addPhoto(response);
         }
         toast.success("photo added successfully");
       } catch (error) {
+        if (error instanceof TokenExpiredError) {
+          localStorage.clear();
+          this.$router.push("/login");
+        }
         toast.error(`${error.message}: photo`);
       }
     },

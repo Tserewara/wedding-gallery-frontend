@@ -1,4 +1,5 @@
 import ServerError from "@/domain/errors/server-error";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 class RemoteLoadPhotos {
   constructor(url, httpClient) {
@@ -19,6 +20,8 @@ class RemoteLoadPhotos {
     switch (httpResponse.status) {
       case 200:
         return httpResponse.data;
+      case 401:
+        throw new TokenExpiredError();
       default:
         throw new ServerError();
     }

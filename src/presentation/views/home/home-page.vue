@@ -18,6 +18,7 @@ import GallerySpinner from "@/presentation/components/gallery-spinner/gallery-sp
 import remoteLoadPhotosFactory from "@/main/factories/domain/usecases/remote-load-photos-factory";
 import { useToast } from "vue-toastification";
 import { mapActions, mapGetters } from "vuex";
+import TokenExpiredError from "../../../domain/errors/token-expired-error";
 
 export default {
   components: { GalleryHeader, PhotoInput, CardPhoto, GallerySpinner },
@@ -47,6 +48,10 @@ export default {
           isAdmin: response.is_admin,
         });
       } catch (error) {
+        if (error instanceof TokenExpiredError) {
+          localStorage.clear();
+          this.$router.push("/login");
+        }
         const toast = useToast();
         toast.error(error.message);
       }

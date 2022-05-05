@@ -1,5 +1,6 @@
 import MissingParamError from "@/domain/errors/missing-param-error";
 import UploadError from "@/domain/errors/upload-error";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 class RemoteAddPhoto {
   constructor(url, httpClient) {
@@ -25,6 +26,8 @@ class RemoteAddPhoto {
         return httpResponse.data;
       case 400:
         throw new MissingParamError();
+      case 401:
+        throw new TokenExpiredError();
       case 500:
         throw new UploadError();
     }

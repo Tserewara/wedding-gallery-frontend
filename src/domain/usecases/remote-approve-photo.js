@@ -1,3 +1,5 @@
+import TokenExpiredError from "@/domain/errors/token-expired-error";
+
 class RemoteApprovePhoto {
   constructor(url, httpClient) {
     this.url = url;
@@ -20,6 +22,8 @@ class RemoteApprovePhoto {
     switch (httpResponse.status) {
       case 200:
         return httpResponse.data;
+      case 401:
+        throw new TokenExpiredError();
       case 404:
         return httpResponse.data;
     }

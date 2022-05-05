@@ -1,4 +1,5 @@
 import ServerError from "@/domain/errors/server-error";
+import TokenExpiredError from "@/domain/errors/token-expired-error";
 
 class RemoteAddComment {
   constructor(url, httpClient) {
@@ -23,6 +24,8 @@ class RemoteAddComment {
     switch (httpResponse.status) {
       case 201:
         return httpResponse.data;
+      case 401:
+        throw new TokenExpiredError();
       default:
         throw new ServerError();
     }

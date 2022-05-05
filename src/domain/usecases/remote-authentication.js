@@ -1,4 +1,4 @@
-import { InvalidCredentialsError } from "@/domain/errors/invalid-credentials-error";
+import InvalidCredentialsError from "@/domain/errors/invalid-credentials-error";
 
 export class RemoteAuthentication {
   constructor(url, httpClient) {
