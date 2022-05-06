@@ -70,6 +70,7 @@ export default {
           this.$router.push("/login");
         }
         toast.error(`${error.message}: photo`);
+        this.uploading = false;
       }
     },
   },
