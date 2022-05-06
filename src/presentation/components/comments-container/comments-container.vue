@@ -9,7 +9,12 @@
     </div>
     <p v-if="showAll" class="more" @click="toggleComments">Hide comments</p>
     <input v-model="newComment" type="text" placeholder="Write a comment" />
-    <button @click="handleSubmit">Comment</button>
+    <div class="buttonContainer">
+      <button @click="handleSubmit">Comment</button>
+      <div class="loadingComment" v-if="loading">
+        <GallerySpinner />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,6 +23,7 @@ import { mapActions, mapGetters } from "vuex";
 import remoteAddCommentFactory from "@/main/factories/domain/usecases/remote-add-comment-factory";
 import { useToast } from "vue-toastification";
 import TokenExpiredError from "@/domain/errors/token-expired-error";
+import GallerySpinner from "@/presentation/components/gallery-spinner/gallery-spinner.vue";
 
 export default {
   name: "CommentsContainer",
@@ -29,26 +35,24 @@ export default {
     return {
       newComment: "",
       showAll: false,
+      loading: false,
     };
   },
-
   computed: {
     ...mapGetters(["currentUser"]),
     commentsToShow() {
       return this.showAll ? this.comments : this.comments.slice(0, 1);
     },
   },
-
   methods: {
     ...mapActions(["addComment"]),
-
     async handleSubmit() {
       const remoteAddComment = remoteAddCommentFactory();
       const token = localStorage.getItem("token");
       if (!this.newComment.trim()) return;
       const toast = useToast();
-
       try {
+        this.loading = true;
         const response = await remoteAddComment.add(
           this.currentUser.userId,
           this.photoId,
@@ -57,6 +61,7 @@ export default {
         );
         this.addComment(response);
         this.newComment = "";
+        this.loading = false;
       } catch (error) {
         if (error instanceof TokenExpiredError) {
           localStorage.clear();
@@ -69,6 +74,7 @@ export default {
       this.showAll = !this.showAll;
     },
   },
+  components: { GallerySpinner },
 };
 </script>
 
