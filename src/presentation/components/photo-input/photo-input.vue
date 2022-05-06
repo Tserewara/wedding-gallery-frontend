@@ -14,7 +14,7 @@ import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 import remoteAddPhotoFactory from "@/main/factories/domain/usecases/remote-add-photo-factory";
 import TokenExpiredError from "@/domain/errors/token-expired-error";
-import GallerySpinner from "../gallery-spinner/gallery-spinner.vue";
+import GallerySpinner from "@/presentation/components/gallery-spinner/gallery-spinner.vue";
 
 export default {
   name: "PhotoInput",
@@ -30,8 +30,18 @@ export default {
     handleChange(event) {
       const toast = useToast();
       const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+
       this.file = event.target.files[0];
+
       const fileType = this.file.type;
+      const fileSize = this.file.size;
+      const maxSize = 30 * 1024 * 1024;
+
+      if (fileSize > maxSize) {
+        toast.error(`This photo is too big. Max size: 30MB`);
+        return;
+      }
+
       if (!allowedTypes.includes(fileType)) {
         toast.error(`File type not allowed ${fileType}`);
         return;
